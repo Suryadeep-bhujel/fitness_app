@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('health_records');
+        Schema::connection("mongodb")->dropIfExists('health_records');
     }
 };
