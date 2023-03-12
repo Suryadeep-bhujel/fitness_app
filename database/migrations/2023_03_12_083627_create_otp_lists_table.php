@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('otp_lists', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("user_id")->nullable(); // use for logged in user 
-            $table->integer("OTP")->index();
+            $table->integer("otp")->index();
             $table->string("username")->nullable()->index(); // use for not logged in user
             $table->timestamps(); 
             $table->foreign("user_id")->on("users")->references("id")->onDelete("CASCADE");
