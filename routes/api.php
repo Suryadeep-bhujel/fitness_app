@@ -32,6 +32,8 @@ Route::prefix("v1")->group(function ($router) {
     });
     $router->prefix("user")->middleware('auth:sanctum')->group(function ($router) {
         $router->post("/update_health_records", [HealthRecordController::class, 'update_health_records']);
+        $router->get("/leaderboard", [HealthRecordController::class, 'leaderboard']);
+        
     });
 
 });

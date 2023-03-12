@@ -36,11 +36,12 @@ class HealthRecordController extends Controller
                     "user_id" => auth()->id(),
                     "record_type" => $request->record_type,
                 ];
-                // $date = Carbon::createFromFormat('Y-m-d H:i:s O', $recordItem['end_time']);
-                // dd($date);
-                $record = HealthRecord::query()
+              
+                HealthRecord::query()
                     ->where('start_time', $start_time)
                     ->where("end_time", $end_time)
+                    ->where('user_id', auth()->id())
+                    ->where("record_type", $request->record_type)
                     ->updateOrCreate($data);
 
             }
@@ -50,6 +51,42 @@ class HealthRecordController extends Controller
             DB::rollback();
             report($th);
             return errorResponse($th, "Something went wrong while updating Health records data.");
+        }
+
+    }
+
+    public function leaderboard(Request $request)
+    {
+        // dd($request->user());
+        try {
+
+            $today = Carbon::today();
+            $date = new \MongoDB\BSON\UTCDateTime(Carbon::createFromFormat("Y-m-d", $today->toDateString())->startOfDay());
+
+            $leaderboard = HealthRecord::query()
+                ->select('id', 'user_id', 'value')
+                ->with(["user" => function ($query) {
+                    return $query->select('id', DB::raw("CONCAT_WS(' ', firstName, middleName, lastName) AS fullname"), "profilPhoto");
+                }])
+                ->whereDate("start_time", ">=", $date)
+                ->orderBy("value", "DESC")
+                ->limit(10)
+                ->get();
+            $top_three_leaderboard = $leaderboard->take(3);
+            // $first = $top_three_leaderboard[0];
+            // $top_three_leaderboard[0] = $top_three_leaderboard[1];
+            // $top_three_leaderboard[1] = $first;
+            // $leaderboard = $leaderboard->skip(3)->take(10);
+          
+            $data = [
+                "leaderboard" => $leaderboard,
+                // "top_three_leaderboard" => $top_three_leaderboard,
+            ];
+            return success200($data);
+        } catch (\Throwable$th) {
+            report($th);
+            dd($th);
+            return errorResponse($th, "Something went wrong while fetching leaderboard.");
         }
 
     }
