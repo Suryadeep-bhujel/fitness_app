@@ -256,6 +256,5 @@ class AuthController extends Controller
             report($th);
             return errorResponse($th, "Something went wrong while authenticating.");
         }
-
     }
 }
