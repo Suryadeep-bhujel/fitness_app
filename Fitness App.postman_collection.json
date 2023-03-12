@@ -1,0 +1,294 @@
+{
+	"info": {
+		"_postman_id": "04f9ad8b-aa3e-4d0c-860b-ab98e554f560",
+		"name": "Fitness App",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11636262"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Signup",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Suryadeep\", \r\n    \"middleName\": \"\",\r\n    \"lastName\" :\"Bhujel\",\r\n    \"email\" : \"srdpbhujel@gmail.com\",\r\n    \"password\" :\"fitness@1144\",\r\n    \"confirm_password\" :\"fitness@1144\"\r\n  \r\n}"
+						},
+						"url": {
+							"raw": "{{URL}}auth/signup",
+							"host": [
+								"{{URL}}auth"
+							],
+							"path": [
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}auth/login",
+							"host": [
+								"{{URL}}auth"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "mobile",
+									"value": "+9779846641469",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}auth/forgot_password",
+							"host": [
+								"{{URL}}auth"
+							],
+							"path": [
+								"forgot_password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "mobile",
+									"value": "+9779846641469",
+									"type": "text"
+								},
+								{
+									"key": "otp",
+									"value": "{{OTP}}",
+									"type": "text"
+								},
+								{
+									"key": "new_password",
+									"value": "fitness@4466",
+									"type": "text"
+								},
+								{
+									"key": "confirm_password",
+									"value": "fitness@4466",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}auth/reset_password",
+							"host": [
+								"{{URL}}auth"
+							],
+							"path": [
+								"reset_password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Signup OTP",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "otp",
+									"value": "{{OTP}}",
+									"type": "text"
+								},
+								{
+									"key": "mobile",
+									"value": "+9779846641469",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}auth/verify_new_account",
+							"host": [
+								"{{URL}}auth"
+							],
+							"path": [
+								"verify_new_account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Resend New Account Verification OTP",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "mobile",
+									"value": "+9779846641469",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}auth/resend_verification_otp",
+							"host": [
+								"{{URL}}auth"
+							],
+							"path": [
+								"resend_verification_otp"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Fitness Record",
+					"item": [
+						{
+							"name": "Update Fitness Record",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"record_type\" : \"step_count\",\r\n    \"records\" : [\r\n        {\r\n            \"stepCount\" : \"13916\",\r\n            \"end_time\" : \"2023-03-12 23:59:00 +0000\",\r\n            \"start_time\" : \"2023-03-12 00:00:00 +0000\"\r\n        },\r\n         {\r\n            \"stepCount\" : \"13916\",\r\n            \"end_time\" : \"2023-03-11 23:59:00 +0000\",\r\n            \"start_time\" : \"2023-03-11 00:00:00 +0000\"\r\n        }\r\n    ]\r\n}"
+								},
+								"url": {
+									"raw": "{{URL}}user/update_health_records",
+									"host": [
+										"{{URL}}user"
+									],
+									"path": [
+										"update_health_records"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Leaderboard",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "{{URL}}user/leaderboard",
+									"host": [
+										"{{URL}}user"
+									],
+									"path": [
+										"leaderboard"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"const _responseJson = pm.response.json();",
+					"if(_responseJson.data.token){",
+					"    pm.environment.set(\"token\", _responseJson.data.token);",
+					"}",
+					"if( _responseJson.data.otp){",
+					"    pm.environment.set(\"OTP\", _responseJson.data.otp);",
+					"}"
+				]
+			}
+		}
+	]
+}
