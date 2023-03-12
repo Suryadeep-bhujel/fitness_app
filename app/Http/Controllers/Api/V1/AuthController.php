@@ -177,6 +177,15 @@ class AuthController extends Controller
         }
     }
 
+    public function check_otp(Request $request)
+    {
+        $validation = Validator::make($request->all(), [
+            "otp" => "required|string|digits:" . OTP_SIZE,
+        ]);
+        if ($validation->fails()) {
+            return validateFormData($validation);
+        }
+    }
     public function reset_password(Request $request)
     {
         $validation = Validator::make($request->all(), [
@@ -212,5 +221,41 @@ class AuthController extends Controller
             report($th);
             return errorResponse($th, "Something went wrong while updating new password.");
         }
+    }
+
+    public function login(Request $request)
+    {
+        $validation = Validator::make($request->all(), [
+            "username" => "required|string",
+            "password" => "required|string|min:8|max:30",
+        ]);
+        if ($validation->fails()) {
+            return validateFormData($validation);
+        }
+        try {
+            //code...
+            $user = User::where(function ($query) use ($request) {
+                return $query->where("mobile", $request->username)
+                    ->orWhere("email", $request->username);
+            })->first();
+
+            if (!$user) {
+                return errorResponse(null, "Invalid login credentials", 422);
+            }
+            if (!Hash::check($request->password, $user->password)) {
+                return errorResponse(null, "Invalid login credentials", 422);
+            }
+            $token = $user->createToken('Personal Access Token')->plainTextToken;
+            $data = [
+                "token" => $token,
+                'user' => $user,
+            ];
+            return successResponse(200, "Successfully logged in", $data);
+
+        } catch (\Throwable$th) {
+            report($th);
+            return errorResponse($th, "Something went wrong while authenticating.");
+        }
+
     }
 }

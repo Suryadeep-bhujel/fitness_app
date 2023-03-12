@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -24,7 +25,14 @@ class Handler extends ExceptionHandler
     protected $dontReport = [
         //
     ];
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
 
+        if (in_array($request->route()->getPrefix(), ['api', 'api/v1', '/api', 'api/', 'api/v1/']) || $request->expectsJson()) {
+            return errorResponse([], "Invalid Auth Token or Auth token is missing.", 401, 'Unauthenticated! Please Login.', 401);
+        }
+
+    }
     /**
      * A list of the inputs that are never flashed to the session on validation exceptions.
      *

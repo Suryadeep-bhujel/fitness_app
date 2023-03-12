@@ -15,17 +15,22 @@ use Illuminate\Support\Facades\Route;
 |
  */
 Route::prefix("v1")->group(function ($router) {
-    $router->prefix("auth")->controller(AuthController::class)->group(function ($router)  {
-        $router->post("/signup", 'signup'); 
-        $router->post("/resend_verification_otp", 'resend_verification_otp'); 
-        
-        $router->post("/login", 'login'); 
-        $router->post("/forgot_password", 'forgot_password'); 
-        $router->post("/reset_password", 'reset_password'); 
-        $router->post("/verify_new_account", 'verify_new_account'); 
+    $router->prefix("auth")->controller(AuthController::class)->group(function ($router) {
+        $router->post("/signup", 'signup');
+        $router->post("/resend_verification_otp", 'resend_verification_otp');
+
+        $router->post("/login", 'login');
+        $router->post("/forgot_password", 'forgot_password');
+        $router->post("/reset_password", 'reset_password');
+        $router->post("/verify_new_account", 'verify_new_account');
+
     });
+    $router->post("/check_otp", [AuthController::class, "check_otp"]);
     $router->middleware('auth:sanctum')->get('/user', function (Request $request) {
         return $request->user();
     });
 
+});
+Route::fallback(function () {
+    return errorResponse([], "Invalid Route name.", 404);
 });
